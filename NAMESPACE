@@ -1,0 +1,8 @@
+exportPattern("^[[:alpha:]]+")
+ importFrom("stats", "arima", "coef", "frequency", "is.ts")
+import("ltsa")
+import("polynom")
+import("tsbox")
+import("xts")
+import("zoo")
+import("tswge")
