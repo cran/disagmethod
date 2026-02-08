@@ -2,7 +2,7 @@ Package: disagmethod
 Type: Package
 Title: Autoregressive Integrated Moving Average (ARIMA) Based
         Disaggregation Methods
-Version: 0.1.0
+Version: 0.1.1
 Authors@R: c(
     person(
       "Erin", "Hodgess",
@@ -22,8 +22,8 @@ License: GPL-2 | GPL-3
 Encoding: UTF-8
 RoxygenNote: 7.3.2
 NeedsCompilation: no
-Packaged: 2026-01-26 18:57:57 UTC; e
+Packaged: 2026-02-08 06:33:59 UTC; e
 Author: Erin Hodgess [aut, cre]
 Maintainer: Erin Hodgess <erinm.hodgess@gmail.com>
 Repository: CRAN
-Date/Publication: 2026-01-30 11:00:14 UTC
+Date/Publication: 2026-02-08 06:50:01 UTC

@@ -18,8 +18,8 @@ lower3 <- function(x,m=1) {
   n <- 0
 
   for(i in 1:1) {
-    for(j in 0:1) {
-    for(ka in 0:0) {
+    for(j in 0:0) {
+    for(ka in 1:1) {
 
         n <- n + 1
         r <- 0
@@ -49,7 +49,12 @@ lower3 <- function(x,m=1) {
         if(i==1 & m %% 2==0) {
           if(y[n,5]<0)y[n,1] <- 999999
         }
+	if(z$sigma2>0) {
         y[n,13] <- z$sigma2
+	} else {
+	y[n,1] <- 999999
+	}
+	
         y[n,14] <- r
         if(i==1 & abs(y[n,5])>=0.99)y[n,1] <- 999999
         if(ka==1 & abs(y[n,8])>=0.99)y[n,1] <- 999999
@@ -58,7 +63,7 @@ lower3 <- function(x,m=1) {
 
 }
   }
-  for(i in 1:2) {
+  for(i in 1:1) {
       n <- n + 1
   z <- try(arima(x,order=c(0,1,i)),silent=TRUE)
   if(!inherits(z,"try-error")) {
@@ -66,8 +71,11 @@ lower3 <- function(x,m=1) {
     y[n,c(2:4)] <- c(0,1,i)
       y[n,8:(8+i-1)] <- z$coef[1:i]
 
-
+    if(z$sigma2>0) {
     y[n,13] <- z$sigma2
+    } else {
+    y[n,1] <- 999999
+    }
     y[n,14] <- 1
     if(i==1 & abs(y[n,8])>=0.99)y[n,1] <- 999999
       }
@@ -81,16 +89,37 @@ lower3 <- function(x,m=1) {
       y[n,c(2:4)] <- c(0,0,i)
       y[n,8:(8+i-1)] <- z$coef[1:i]
 
+      if(z$sigma2>0) {
       y[n,13] <- z$sigma2
+      } else {
+      y[n,1] <- 999999
+      }
       y[n,14] <- i
       if(i==1 & abs(y[n,8])>=0.99)y[n,1] <- 999999
     }
   }
 
 
-
+  
 
   yy <- which(y[,1]==min(y[,1],na.rm=TRUE))[1]
+
+if(y[yy,1]==999999) {
+    cm5 <- matrix(0,nrow=nu,ncol=nw)
+  nc <- m
+  cpoly <- polynomial(rep(1,m))
+  cp2 <- cpoly
+  cp3 <- coef(cp2)
+  ncp1 <- length(cp3)
+  cm5[1,1:ncp1] <- cp3
+  for(i in 2:nu) {
+    j1 <- (i-1)*m + 1
+    j2 <- j1 + (ncp1-1)
+    cm5[i,j1:j2] <- cp3
+  }
+  fin1 <- t(cm5)%*% x
+  fin1 <- fin1/m
+} else {
 
 
   od1 <- y[yy,c(2:4,14)]
@@ -272,10 +301,18 @@ nin1 <- max(ng)-min(ng)
       top2 <- xv.mat %*% t(cm5) %*% xui.mat
       fin1 <- top2 %*% x
 }
-     zzz <- list(bigy=c(od1[1:2],y[yy,14]),fin1=fin1)
+}
+
+
+    
+
+
+
+     zzz <- list(bigy=c(y[yy,2:4],y[yy,14]),fin1=fin1)
 
     return(zzz)
   }
+
 
 
 
